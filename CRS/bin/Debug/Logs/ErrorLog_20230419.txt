@@ -1,0 +1,28 @@
+
+Log Entry : 3:23:52 PM Wednesday, April 19, 2023
+  
+   UserName =  SuperAdmin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteProcedure
+  
+   ShowMessage: İstifadəçilərin bazaya qoşulması dəyişdirilmədi.
+   Exception Message: ORA-06550: line 1, column 16:
+PLS-00905: object CRS_USER.PROC_ALTER_SESSION is invalid
+ORA-06550: line 1, column 7:
+PL/SQL: Statement ignored
+   SQL Text      :  CRS_USER.PROC_ALTER_SESSION
+-------------------------------------------------
+
+Log Entry : 3:26:20 PM Wednesday, April 19, 2023
+  
+   UserName =  SuperAdmin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteProcedure
+  
+   ShowMessage: İstifadəçilərin bazaya qoşulması dəyişdirilmədi.
+   Exception Message: ORA-06550: line 1, column 16:
+PLS-00905: object CRS_USER.PROC_ALTER_SESSION is invalid
+ORA-06550: line 1, column 7:
+PL/SQL: Statement ignored
+   SQL Text      :  CRS_USER.PROC_ALTER_SESSION
+-------------------------------------------------

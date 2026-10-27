@@ -1,0 +1,12 @@
+
+Log Entry : 15:43:41 18 oktyabr 2023, çərşənbə
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteQuery/FObjectRegistrationAddEdit/InsertDetail
+  
+   ShowMessage: Ərizə göndərilmədi.
+   Exception Message: ORA-00904: "INSERT_USER": invalid identifier
+   SQL Text      :  INSERT INTO CRS_USER.OBJECT_REGISTRATION(CONTRACT_ID,SENT_DATE,ARRIVAL_DATE,INSERT_USER)
+                                VALUES(2241,TO_DATE('18.10.2023','DD.MM.YYYY'),TO_DATE('','DD.MM.YYYY'),11)
+-------------------------------------------------

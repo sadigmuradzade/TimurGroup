@@ -1,0 +1,51 @@
+
+Log Entry : 14:38:53 13 oktyabr 2023, cümə
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  GenerateDataTable : FObjectRegistration/LoadContract
+  
+   ShowMessage: Müqavilələrin siyahısı açılmadı.
+   Exception Message: ORA-00936: missing expression
+   SQL Text      :  SELECT OB.ID,
+                                   OB.CONTRACT_ID,
+                                   C.CONTRACT_CODE,
+                                   OB.SENT_DATE,
+                                   OB.ARRIVAL_DATE,
+                                   OB.REGISTRATION_NUMBER,
+                                   OB.REGISTRATION_DATE,
+                                   OB.URL,
+                                   OB.NOTE,
+                                   HO.ADDRESS,
+                                   HO.AREA
+                                   (SELECT USER_FULLNAME
+                                      FROM CRS_USER.V_USERS
+                                     WHERE ID = UPDATE_USER)
+                                      LAST_UPDATE_USER,
+                                   UPDATE_DATE
+                              FROM CRS_USER.OBJECT_REGISTRATION OB, CRS_USER.V_CONTRACTS C, CRS_USER.HOSTAGE_OBJECT HO
+                             WHERE OB.CONTRACT_ID = C.CONTRACT_ID AND C.CONTRACT_ID = HO.CONTRACT_ID
+-------------------------------------------------
+
+Log Entry : 19:42:28 13 oktyabr 2023, cümə
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteQuery/FObjectRegistrationAddEdit/InsertDetail
+  
+   ShowMessage: Ərizə göndərilmədi.
+   Exception Message: ORA-00001: unique constraint (CRS_USER.UNQ_CONTRACT_ID) violated
+   SQL Text      :  INSERT INTO CRS_USER.OBJECT_REGISTRATION(CONTRACT_ID,SENT_DATE,ARRIVAL_DATE)
+                                VALUES(2274,TO_DATE('13.10.2023','DD.MM.YYYY'),TO_DATE('','DD.MM.YYYY'))
+-------------------------------------------------
+
+Log Entry : 19:59:03 13 oktyabr 2023, cümə
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteQuery/Lock_or_UnLock_UserID
+  
+   ShowMessage: CRS_USER.OBJECT_REGISTRATION cədvəli bloka düşmədi.
+   Exception Message: ORA-00936: missing expression
+   SQL Text      :  UPDATE CRS_USER.OBJECT_REGISTRATION SET USED_USER_ID = -1 WHERE ID =  AND USED_USER_ID = 11
+-------------------------------------------------

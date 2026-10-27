@@ -1,0 +1,46 @@
+
+Log Entry : 17:08:25 4 dekabr 2023, bazar ertəsi
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  ExecuteQueryWithBlob
+  
+   ShowMessage: Etibarnamənin məlumatları temp cədvələ daxil edilmədi.
+   Exception Message: ORA-00936: missing expression
+   SQL Text      :  sql_text = INSERT INTO CRS_USER_TEMP.POWER_OF_ATTORNEY_TEMP(ID,
+                                                                                CONTRACT_ID,
+                                                                                FULLNAME,
+                                                                                FULLNAME_CHECK,
+                                                                                POWER_DATE,
+                                                                                CARD_SERIES_ID,
+                                                                                CARD_NUMBER,
+                                                                                CARD_ISSUING_ID,
+                                                                                CARD_ISSUE_DATE,
+                                                                                CARD_RELIABLE_DATE,
+                                                                                POWER_FILE,
+                                                                                USED_USER_ID,
+                                                                                IS_CHANGE,
+                                                                                POWER_CODE,
+                                                                                POWER_NUMBER,
+                                                                                IS_RESPONSIBLE,
+                                                                                BIRTHDAY,
+                                                                                INSERT_USER)
+                            VALUES(17506,
+                                   2265,
+                                    'Həsənov Zakir Qulu oğlu',
+                                    0,
+                                    TO_DATE('04.12.2023','DD/MM/YYYY'),
+                                    ,
+                                    '252931',
+                                    3,
+                                    TO_DATE('30.10.2020','DD/MM/YYYY'),
+                                    TO_DATE('29.10.2030','DD/MM/YYYY'),
+                                    :BlobFile,
+                                    11,
+                                    1,
+                                    'P12963/23',
+                                    12963,
+                                    0,
+                                    TO_DATE('04.10.1985','DD/MM/YYYY'),
+                                    11)
+-------------------------------------------------

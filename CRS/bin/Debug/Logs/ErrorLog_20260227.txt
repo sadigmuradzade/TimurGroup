@@ -1,0 +1,10 @@
+
+Log Entry : 14:35:48 27 fevral 2026, cümə
+  
+   UserName =  Admin
+   FormName =  FCommitmentTransmission
+   ProcedureName =  CRS.Forms.Contracts.FCommitmentTransmission.BCreateFile_Click
+  
+   ShowMessage: D:\C#\Projects\Lizinq\TimurGroup\CRS\bin\Debug\TEMP\Documents\1_Öhdəlik ötürmə_F001.docx faylı açılmadı
+   Exception Message: The requested member of the collection does not exist.
+-------------------------------------------------

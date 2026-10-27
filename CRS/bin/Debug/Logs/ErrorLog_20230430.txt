@@ -1,0 +1,22 @@
+
+Log Entry : 11:35:05 30 aprel 2023, bazar
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  GenerateDataTable : FContractAddEdit/LoadGuarantee
+  
+   ShowMessage: Zaminlərin siyahısı yüklənmədi.
+   Exception Message: ORA-00904: "C"."ALPHA3CODE": invalid identifier
+   SQL Text      :  SELECT G.ID,                                   
+                                   G.CARD_NUMBER,
+                                   G.CARD_PINCODE,
+                                   G.NAME,
+                                   C.ALPHA3CODE COUNTRY_CODE,
+                                   G.BIRTHDAY,
+                                   G.USED_USER_ID
+                              FROM CRS_USER_TEMP.GUARANTEE_TEMP G,
+                                   CRS_USER.COUNTRIES C
+                             WHERE    G.COUNTRY_ID = C.ID
+                                   AND G.IS_CHANGE != 2
+                                   AND G.CONTRACT_ID = 2241
+-------------------------------------------------

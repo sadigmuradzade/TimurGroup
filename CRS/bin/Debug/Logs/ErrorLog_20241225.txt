@@ -1,0 +1,13 @@
+
+Log Entry : 15:34:49 25 dekabr 2024, çərşənbə
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteQuery/UpdateUserCloseConnection
+  
+   ShowMessage: İstifadəçinin sistemdən çıxma vaxtı cədvəldə dəyişdirilmədi.
+   Exception Message: ORA-12570: Network Session: Unexpected packet read error
+   InnerException Message:  ORA-12570: Network Session: Unexpected packet read error
+   A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+   SQL Text      :  UPDATE CRS_USER.USER_CONNECTIONS SET DISCONNECT_DATE = SYSDATE WHERE USER_ID = 11 AND DISCONNECT_DATE IS NULL
+-------------------------------------------------

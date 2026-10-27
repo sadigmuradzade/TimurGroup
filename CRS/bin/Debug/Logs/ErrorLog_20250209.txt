@@ -1,0 +1,578 @@
+
+Log Entry : 02:28:05 9 fevral 2025, bazar
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  GenerateDataTable : FTotal/LoadTotalsDataGridView
+  
+   ShowMessage: Portfel yüklənmədi.
+   Exception Message: ORA-00904: "T3"."LAST_PAYMENT_DATE": invalid identifier
+   SQL Text      :  SELECT * FROM 
+                        (SELECT T.CUSTOMER_CODE,
+                               T.FULL_CUSTOMER_NAME,
+                               T.CONTRACT_CODE,
+                               T.INTEREST,
+                               T.PERIOD,
+                               T.START_DATE,
+                               T.GIVEN_DATE,
+                               T.END_DATE,
+                               T.AMOUNT,
+                               T.CURRENCY_CODE,
+                               T.CURRENCY_ORDER,
+                               T.PAYMENT_AMOUNT,
+                               T.BASIC_AMOUNT,
+                               T.DEBT,
+                               (CASE
+                                   WHEN T.STATUS_ID = 5 THEN CRS_USER.TOTALS.DAYS360 (T.START_DATE, TO_DATE ('31.01.2025', 'DD/MM/YYYY'))
+                                   ELSE CRS_USER.TOTALS.DAYS360 (T.START_DATE, T.P_STARTDATE)
+                                END)
+                                  DAY_COUNT,
+                               CRS_USER.TOTALS.INTEREST_AMOUNT (T.P_STARTDATE,
+                                                       T.P_ENDDATE,
+                                                       T.DEBT,
+                                                       T.INTEREST,
+                                                       T.CONTRACT_ID)
+                                  INTEREST_AMOUNT,
+                               T.PAYMENT_INTEREST_AMOUNT,
+                               CRS_USER.TOTALS.PAYMENT_INTEREST_DEBT (T.P_STARTDATE,
+                                                             T.P_ENDDATE,
+                                                             T.DEBT,
+                                                             T.INTEREST,
+                                                             T.CONTRACT_ID,
+                                                             T.PAYMENT_INTEREST_DEBT)
+                                  PAYMENT_INTEREST_DEBT,                               
+                               T.HOSTAGE,
+                               T.LIQUID_AMOUNT,
+                               T.SELLER_NAME,
+                               T.COMMITMENT_NAME,
+                               T.PHONES,                               
+                               CRS_USER.TOTALS.DELAYS (T.P_STARTDATE,
+                                              T.P_ENDDATE,
+                                              T.DEBT,
+                                              T.INTEREST,
+                                              T.CONTRACT_ID,                                              
+                                              T.PAYMENT_TYPE,
+                                              T.PAYMENT_INTEREST_AMOUNT)
+                                  DELAYS,
+                               CRS_USER.TOTALS.ORDERID (T.CONTRACT_ID) FULL_MONTH_COUNT,
+                               T.MONTHLY_AMOUNT,
+                               CRS_USER.TOTALS.NORM_DEBT (T.CONTRACT_ID) NORM_DEBT,
+                               T.MAX_PAYMENT_DATE,
+                               T.CONTRACT_NOTE,
+                               T.NOTE_CHANGE_USER,
+                               T.NOTE_CHANGE_DATE,
+                               T.USED_USER_ID,
+                               T.CONTRACT_ID,
+                               T.CUSTOMER_ID,
+                               T.CUSTOMER_TYPE_ID,
+                               T.SELLER_ID,
+                               T.SELLER_TYPE_ID,
+                               T.STATUS_ID,
+                               T.CREDIT_TYPE_ID,
+                               T.CREDIT_NAME_ID,
+                               T.COMMITMENT_ID,
+                               T.CUSTOMER_NAME,
+                               T.COMMITMENT_PERSON_TYPE_ID,
+                               T.CONTRACT_EVALUATE_NAME,
+                               T.PAYMENT_DAY,
+                               T.EXTEND_MONTHLY_AMOUNT,
+                               T.IS_OLD,
+                               T.INT_EXTEND_MONTH_COUNT,
+                               T.INSURANCE_END_DATE,
+                               T.INSURANCE_DIFF_MONTH,
+                               T.IS_SPECIAL_ATTENTION,
+                               T.CONTRACT_EVALUATE_ID,
+                               T.HOSTAGE_NAME,
+                               T.EXTEND_START_DATE,
+                               T.EXTEND_DEBT,
+                               CRS_USER.TOTALS.DELAYS_DAY_COUNT (T.CONTRACT_ID) DELAYS_DAY_COUNT,
+                               T.CURRENCY_ID,
+                               T.CONTRACT_START_DATE,
+                               T.CONTRACT_END_DATE,
+                               T.LAST_PAYMENT_DATE,
+                               T.PERSON_TYPE_NAME
+                          FROM (WITH T1
+                                     AS (SELECT CUS.CODE CUSTOMER_CODE,
+                                                CUS.FULLNAME FULL_CUSTOMER_NAME,
+                                                CUS.CUSTOMER_NAME,
+                                                CON.CONTRACT_CODE,
+                                                NVL2 (CE.INTEREST, CE.INTEREST, NVL(COM.INTEREST, CON.INTEREST)) INTEREST,
+                                                NVL2 (CE.MONTH_COUNT, CE.MONTH_COUNT, CON.PERIOD) PERIOD,
+                                                CON.START_DATE,
+                                                NVL2 (CE.START_DATE, CE.START_DATE, CON.START_DATE)
+                                                        GIVEN_DATE,
+                                                NVL(CE.END_DATE, CON.END_DATE) END_DATE,
+                                                CON.AMOUNT,
+                                                CON.CURRENCY_CODE,
+                                                CON.CURRENCY_ORDER,
+                                                H.HOSTAGE,
+                                                H.LIQUID_AMOUNT,
+                                                S.FULLNAME SELLER_NAME,
+                                                COM.COMMITMENT_NAME,
+                                                (CASE
+                                                    WHEN COM.COMMITMENT_NAME IS NULL THEN CUS.PHONE
+                                                    ELSE COM.PHONE
+                                                 END)
+                                                   PHONES,
+                                                NVL2 (CE.MONTHLY_AMOUNT, ROUND(CE.MONTHLY_AMOUNT,2), CON.MONTHLY_AMOUNT)
+                                                        MONTHLY_AMOUNT,
+                                                CON.CONTRACT_NOTE,
+                                                CON.NOTE_CHANGE_USER,
+                                                CON.NOTE_CHANGE_DATE,
+                                                CON.USED_USER_ID,
+                                                CON.STATUS_ID,
+                                                CON.CONTRACT_ID,
+                                                CON.CUSTOMER_ID,
+                                                CON.CUSTOMER_TYPE_ID,
+                                                CON.SELLER_ID,
+                                                CON.SELLER_TYPE_ID,
+                                                CON.PAYMENT_TYPE,
+                                                CON.CREDIT_TYPE_ID,
+                                                CON.CREDIT_NAME_ID,
+                                                NVL (COM.ID, 0) COMMITMENT_ID,
+                                                CON.PARENT_ID,
+                                                COM.PERSON_TYPE_ID COMMITMENT_PERSON_TYPE_ID,
+                                                CON.CONTRACT_EVALUATE_NAME,
+                                                CE.MONTHLY_AMOUNT EXTEND_MONTHLY_AMOUNT,
+                                                (CASE WHEN CON.END_DATE < TRUNC(SYSDATE) THEN 1 ELSE 0 END) IS_OLD,
+                                                CE.START_DATE EXTEND_START_DATE,
+                                                NVL2(CE.MONTH_COUNT, CE.MONTH_COUNT,  0) INT_EXTEND_MONTH_COUNT,
+                                                INS.END_DATE INSURANCE_END_DATE,
+                                                  (CASE
+                                                      WHEN INS.INSURANCE_PERIOD = CON.PERIOD AND INS.END_DATE < TRUNC(SYSDATE) THEN 103
+                                                      WHEN INS.INSURANCE_PERIOD = CON.PERIOD AND INS.END_DATE >= TRUNC(SYSDATE) THEN 100
+                                                      WHEN INS.IS_CANCEL = 1
+                                                      THEN
+                                                         101
+                                                      WHEN INS.END_DATE < TRUNC(SYSDATE) THEN 102 
+                                                         WHEN (INS.END_DATE - TRUNC(SYSDATE)) < 31  THEN 1
+                                                         ELSE 0
+                                                   END)
+                                                     INSURANCE_DIFF_MONTH,
+                                                  CON.IS_SPECIAL_ATTENTION,
+                                                  CON.CONTRACT_EVALUATE_ID,
+                                                  H.HOSTAGE_NAME,
+                                                  NVL(CE.DEBT, 0) EXTEND_DEBT,
+                                                  CON.CURRENCY_ID,
+                                                  CON.START_DATE CONTRACT_START_DATE,
+                                                  CON.END_DATE CONTRACT_END_DATE,                                                  
+                                                  PT.NAME PERSON_TYPE_NAME
+                                           FROM CRS_USER.V_CONTRACTS CON,
+                                                (SELECT *
+                                                      FROM CRS_USER.V_LAST_CONTRACT_EXTEND
+                                                     WHERE    START_DATE <= TO_DATE ('31.01.2025', 'DD/MM/YYYY')
+                                                           OR START_DATE IS NULL) CE,
+                                                CRS_USER.V_CUSTOMERS CUS,
+                                                CRS_USER.V_HOSTAGE H,
+                                                CRS_USER.V_SELLERS S,
+                                                CRS_USER.V_CONTRACT_COMMITMENTS COM,
+                                                CRS_USER.V_LAST_INSURANCES INS,
+                                                CRS_USER.PERSON_TYPE PT
+                                          WHERE     CON.IS_COMMIT = 1
+                                                AND CON.CUSTOMER_ID = CUS.ID
+                                                AND CON.CUSTOMER_TYPE_ID = CUS.PERSON_TYPE_ID
+                                                AND CUS.PERSON_TYPE_ID = PT.ID
+                                                AND CON.CONTRACT_ID = H.CONTRACT_ID
+                                                AND CON.SELLER_ID = S.ID
+                                                AND CON.SELLER_TYPE_ID = S.PERSON_TYPE_ID
+                                                AND CON.CONTRACT_ID = COM.CONTRACT_ID(+)
+                                                AND CON.CONTRACT_ID = CE.CONTRACT_ID(+)
+                                                AND CON.CONTRACT_ID = INS.CONTRACT_ID(+)
+                                                AND CON.STATUS_ID IN (5, 6)
+                                                AND CON.START_DATE <=
+                                                       TO_DATE ('31.01.2025', 'DD/MM/YYYY')),
+                                     T2
+                                     AS (  SELECT CP.CUSTOMER_ID,
+                                                  CP.CONTRACT_ID,
+                                                  CP.CUSTOMER_TYPE_ID,
+                                                  SUM (CP.PAYMENT_AMOUNT) PAYMENT_AMOUNT,
+                                                  SUM (CP.BASIC_AMOUNT) BASIC_AMOUNT,
+                                                  SUM (CP.PAYMENT_INTEREST_AMOUNT)
+                                                     PAYMENT_INTEREST_AMOUNT,
+                                                  MAX (CP.PAYMENT_DATE) PAYMENT_DATE
+                                             FROM CRS_USER.CUSTOMER_PAYMENTS CP
+                                            WHERE CP.PAYMENT_DATE <=
+                                                     TO_DATE ('31.01.2025', 'DD/MM/YYYY')
+                                         GROUP BY CP.CUSTOMER_ID,
+                                                  CP.CONTRACT_ID,
+                                                  CP.CUSTOMER_TYPE_ID,
+                                                  CP.USED_USER_ID),
+                                     T3
+                                      AS (SELECT CONTRACT_ID, DEBT, PAYMENT_INTEREST_DEBT, PAYMENT_DATE
+                                                FROM CRS_USER.CUSTOMER_PAYMENTS CP
+                                              WHERE ID =
+                                                       (SELECT MAX (ID)
+                                                             FROM CRS_USER.CUSTOMER_PAYMENTS
+                                                      WHERE CONTRACT_ID =
+                                                                  CP.CONTRACT_ID
+                                                                AND PAYMENT_DATE <=
+                                                                      TO_DATE ('31.01.2025',
+                                                                             'DD/MM/YYYY')))
+                                SELECT T1.CUSTOMER_CODE,
+                                       T1.FULL_CUSTOMER_NAME,
+                                       T1.CUSTOMER_NAME,
+                                       T1.CONTRACT_CODE,
+                                       T1.INTEREST,
+                                       T1.PERIOD,
+                                       T1.START_DATE,
+                                       T1.GIVEN_DATE,
+                                       T1.END_DATE,
+                                       T1.AMOUNT,
+                                       T1.CURRENCY_CODE,
+                                       T1.CURRENCY_ORDER,
+                                       NVL (T2.PAYMENT_AMOUNT, 0) PAYMENT_AMOUNT,
+                                       NVL (T2.BASIC_AMOUNT, 0) BASIC_AMOUNT,
+                                       T1.AMOUNT - NVL (T2.BASIC_AMOUNT, 0) DEBT,
+                                       NVL (T2.PAYMENT_INTEREST_AMOUNT, 0) PAYMENT_INTEREST_AMOUNT,
+                                       NVL (T3.PAYMENT_INTEREST_DEBT, 0) PAYMENT_INTEREST_DEBT,
+                                       T2.PAYMENT_DATE MAX_PAYMENT_DATE,
+                                       T1.HOSTAGE,
+                                       T1.LIQUID_AMOUNT,
+                                       T1.SELLER_NAME,
+                                       T1.COMMITMENT_NAME,
+                                       T1.MONTHLY_AMOUNT,
+                                       T1.PHONES,
+                                       T1.CONTRACT_NOTE,
+                                       T1.NOTE_CHANGE_USER,
+                                       T1.NOTE_CHANGE_DATE,
+                                       T1.USED_USER_ID,
+                                       T1.CONTRACT_ID,
+                                       T1.CUSTOMER_ID,
+                                       T1.CUSTOMER_TYPE_ID,
+                                       T1.SELLER_ID,
+                                       T1.SELLER_TYPE_ID,
+                                       T1.STATUS_ID,
+                                       T1.CREDIT_TYPE_ID,
+                                       T1.CREDIT_NAME_ID,
+                                       T1.COMMITMENT_ID,
+                                       T1.PAYMENT_TYPE,
+                                       (CASE
+                                           WHEN T2.PAYMENT_DATE IS NULL THEN T1.START_DATE
+                                           ELSE T2.PAYMENT_DATE
+                                        END)
+                                          P_STARTDATE,
+                                       (CASE
+                                           WHEN T1.STATUS_ID = 5
+                                           THEN
+                                              TO_DATE ('31.01.2025', 'DD/MM/YYYY')
+                                           ELSE
+                                              (CASE
+                                                  WHEN T2.PAYMENT_DATE IS NULL THEN T1.START_DATE
+                                                  ELSE T2.PAYMENT_DATE
+                                               END)
+                                        END)
+                                          P_ENDDATE,
+                                        T1.PARENT_ID,
+                                        T1.COMMITMENT_PERSON_TYPE_ID,
+                                        T1.CONTRACT_EVALUATE_NAME,
+                                        EXTRACT (DAY FROM NVL2 (T1.EXTEND_START_DATE, T1.EXTEND_START_DATE, T1.START_DATE))
+                                                        PAYMENT_DAY,
+                                        T1.EXTEND_MONTHLY_AMOUNT,
+                                        T1.IS_OLD,
+                                        T1.INT_EXTEND_MONTH_COUNT,
+                                        T1.INSURANCE_END_DATE,
+                                        T1.INSURANCE_DIFF_MONTH,
+                                        T1.IS_SPECIAL_ATTENTION,
+                                        T1.CONTRACT_EVALUATE_ID,
+                                        T1.HOSTAGE_NAME,
+                                        T1.EXTEND_START_DATE,
+                                        T1.EXTEND_DEBT,
+                                        T1.CURRENCY_ID,
+                                        T1.CONTRACT_START_DATE,
+                                        T1.CONTRACT_END_DATE,
+                                        T3.LAST_PAYMENT_DATE,
+                                        T1.PERSON_TYPE_NAME
+                                  FROM T1
+                                                 LEFT JOIN T2 ON T1.CONTRACT_ID = T2.CONTRACT_ID
+                                                 LEFT JOIN T3 ON T1.CONTRACT_ID = T3.CONTRACT_ID) T
+                                ORDER BY T.CONTRACT_CODE DESC) LT WHERE 1 = 1
+-------------------------------------------------
+
+Log Entry : 02:29:02 9 fevral 2025, bazar
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  GenerateDataTable : FTotal/LoadTotalsDataGridView
+  
+   ShowMessage: Portfel yüklənmədi.
+   Exception Message: ORA-00904: "T3"."LAST_PAYMENT_DATE": invalid identifier
+   SQL Text      :  SELECT * FROM 
+                        (SELECT T.CUSTOMER_CODE,
+                               T.FULL_CUSTOMER_NAME,
+                               T.CONTRACT_CODE,
+                               T.INTEREST,
+                               T.PERIOD,
+                               T.START_DATE,
+                               T.GIVEN_DATE,
+                               T.END_DATE,
+                               T.AMOUNT,
+                               T.CURRENCY_CODE,
+                               T.CURRENCY_ORDER,
+                               T.PAYMENT_AMOUNT,
+                               T.BASIC_AMOUNT,
+                               T.DEBT,
+                               (CASE
+                                   WHEN T.STATUS_ID = 5 THEN CRS_USER.TOTALS.DAYS360 (T.START_DATE, TO_DATE ('31.01.2025', 'DD/MM/YYYY'))
+                                   ELSE CRS_USER.TOTALS.DAYS360 (T.START_DATE, T.P_STARTDATE)
+                                END)
+                                  DAY_COUNT,
+                               CRS_USER.TOTALS.INTEREST_AMOUNT (T.P_STARTDATE,
+                                                       T.P_ENDDATE,
+                                                       T.DEBT,
+                                                       T.INTEREST,
+                                                       T.CONTRACT_ID)
+                                  INTEREST_AMOUNT,
+                               T.PAYMENT_INTEREST_AMOUNT,
+                               CRS_USER.TOTALS.PAYMENT_INTEREST_DEBT (T.P_STARTDATE,
+                                                             T.P_ENDDATE,
+                                                             T.DEBT,
+                                                             T.INTEREST,
+                                                             T.CONTRACT_ID,
+                                                             T.PAYMENT_INTEREST_DEBT)
+                                  PAYMENT_INTEREST_DEBT,                               
+                               T.HOSTAGE,
+                               T.LIQUID_AMOUNT,
+                               T.SELLER_NAME,
+                               T.COMMITMENT_NAME,
+                               T.PHONES,                               
+                               CRS_USER.TOTALS.DELAYS (T.P_STARTDATE,
+                                              T.P_ENDDATE,
+                                              T.DEBT,
+                                              T.INTEREST,
+                                              T.CONTRACT_ID,                                              
+                                              T.PAYMENT_TYPE,
+                                              T.PAYMENT_INTEREST_AMOUNT)
+                                  DELAYS,
+                               CRS_USER.TOTALS.ORDERID (T.CONTRACT_ID) FULL_MONTH_COUNT,
+                               T.MONTHLY_AMOUNT,
+                               CRS_USER.TOTALS.NORM_DEBT (T.CONTRACT_ID) NORM_DEBT,
+                               T.MAX_PAYMENT_DATE,
+                               T.CONTRACT_NOTE,
+                               T.NOTE_CHANGE_USER,
+                               T.NOTE_CHANGE_DATE,
+                               T.USED_USER_ID,
+                               T.CONTRACT_ID,
+                               T.CUSTOMER_ID,
+                               T.CUSTOMER_TYPE_ID,
+                               T.SELLER_ID,
+                               T.SELLER_TYPE_ID,
+                               T.STATUS_ID,
+                               T.CREDIT_TYPE_ID,
+                               T.CREDIT_NAME_ID,
+                               T.COMMITMENT_ID,
+                               T.CUSTOMER_NAME,
+                               T.COMMITMENT_PERSON_TYPE_ID,
+                               T.CONTRACT_EVALUATE_NAME,
+                               T.PAYMENT_DAY,
+                               T.EXTEND_MONTHLY_AMOUNT,
+                               T.IS_OLD,
+                               T.INT_EXTEND_MONTH_COUNT,
+                               T.INSURANCE_END_DATE,
+                               T.INSURANCE_DIFF_MONTH,
+                               T.IS_SPECIAL_ATTENTION,
+                               T.CONTRACT_EVALUATE_ID,
+                               T.HOSTAGE_NAME,
+                               T.EXTEND_START_DATE,
+                               T.EXTEND_DEBT,
+                               CRS_USER.TOTALS.DELAYS_DAY_COUNT (T.CONTRACT_ID) DELAYS_DAY_COUNT,
+                               T.CURRENCY_ID,
+                               T.CONTRACT_START_DATE,
+                               T.CONTRACT_END_DATE,
+                               T.LAST_PAYMENT_DATE,
+                               T.PERSON_TYPE_NAME
+                          FROM (WITH T1
+                                     AS (SELECT CUS.CODE CUSTOMER_CODE,
+                                                CUS.FULLNAME FULL_CUSTOMER_NAME,
+                                                CUS.CUSTOMER_NAME,
+                                                CON.CONTRACT_CODE,
+                                                NVL2 (CE.INTEREST, CE.INTEREST, NVL(COM.INTEREST, CON.INTEREST)) INTEREST,
+                                                NVL2 (CE.MONTH_COUNT, CE.MONTH_COUNT, CON.PERIOD) PERIOD,
+                                                CON.START_DATE,
+                                                NVL2 (CE.START_DATE, CE.START_DATE, CON.START_DATE)
+                                                        GIVEN_DATE,
+                                                NVL(CE.END_DATE, CON.END_DATE) END_DATE,
+                                                CON.AMOUNT,
+                                                CON.CURRENCY_CODE,
+                                                CON.CURRENCY_ORDER,
+                                                H.HOSTAGE,
+                                                H.LIQUID_AMOUNT,
+                                                S.FULLNAME SELLER_NAME,
+                                                COM.COMMITMENT_NAME,
+                                                (CASE
+                                                    WHEN COM.COMMITMENT_NAME IS NULL THEN CUS.PHONE
+                                                    ELSE COM.PHONE
+                                                 END)
+                                                   PHONES,
+                                                NVL2 (CE.MONTHLY_AMOUNT, ROUND(CE.MONTHLY_AMOUNT,2), CON.MONTHLY_AMOUNT)
+                                                        MONTHLY_AMOUNT,
+                                                CON.CONTRACT_NOTE,
+                                                CON.NOTE_CHANGE_USER,
+                                                CON.NOTE_CHANGE_DATE,
+                                                CON.USED_USER_ID,
+                                                CON.STATUS_ID,
+                                                CON.CONTRACT_ID,
+                                                CON.CUSTOMER_ID,
+                                                CON.CUSTOMER_TYPE_ID,
+                                                CON.SELLER_ID,
+                                                CON.SELLER_TYPE_ID,
+                                                CON.PAYMENT_TYPE,
+                                                CON.CREDIT_TYPE_ID,
+                                                CON.CREDIT_NAME_ID,
+                                                NVL (COM.ID, 0) COMMITMENT_ID,
+                                                CON.PARENT_ID,
+                                                COM.PERSON_TYPE_ID COMMITMENT_PERSON_TYPE_ID,
+                                                CON.CONTRACT_EVALUATE_NAME,
+                                                CE.MONTHLY_AMOUNT EXTEND_MONTHLY_AMOUNT,
+                                                (CASE WHEN CON.END_DATE < TRUNC(SYSDATE) THEN 1 ELSE 0 END) IS_OLD,
+                                                CE.START_DATE EXTEND_START_DATE,
+                                                NVL2(CE.MONTH_COUNT, CE.MONTH_COUNT,  0) INT_EXTEND_MONTH_COUNT,
+                                                INS.END_DATE INSURANCE_END_DATE,
+                                                  (CASE
+                                                      WHEN INS.INSURANCE_PERIOD = CON.PERIOD AND INS.END_DATE < TRUNC(SYSDATE) THEN 103
+                                                      WHEN INS.INSURANCE_PERIOD = CON.PERIOD AND INS.END_DATE >= TRUNC(SYSDATE) THEN 100
+                                                      WHEN INS.IS_CANCEL = 1
+                                                      THEN
+                                                         101
+                                                      WHEN INS.END_DATE < TRUNC(SYSDATE) THEN 102 
+                                                         WHEN (INS.END_DATE - TRUNC(SYSDATE)) < 31  THEN 1
+                                                         ELSE 0
+                                                   END)
+                                                     INSURANCE_DIFF_MONTH,
+                                                  CON.IS_SPECIAL_ATTENTION,
+                                                  CON.CONTRACT_EVALUATE_ID,
+                                                  H.HOSTAGE_NAME,
+                                                  NVL(CE.DEBT, 0) EXTEND_DEBT,
+                                                  CON.CURRENCY_ID,
+                                                  CON.START_DATE CONTRACT_START_DATE,
+                                                  CON.END_DATE CONTRACT_END_DATE,                                                  
+                                                  PT.NAME PERSON_TYPE_NAME
+                                           FROM CRS_USER.V_CONTRACTS CON,
+                                                (SELECT *
+                                                      FROM CRS_USER.V_LAST_CONTRACT_EXTEND
+                                                     WHERE    START_DATE <= TO_DATE ('31.01.2025', 'DD/MM/YYYY')
+                                                           OR START_DATE IS NULL) CE,
+                                                CRS_USER.V_CUSTOMERS CUS,
+                                                CRS_USER.V_HOSTAGE H,
+                                                CRS_USER.V_SELLERS S,
+                                                CRS_USER.V_CONTRACT_COMMITMENTS COM,
+                                                CRS_USER.V_LAST_INSURANCES INS,
+                                                CRS_USER.PERSON_TYPE PT
+                                          WHERE     CON.IS_COMMIT = 1
+                                                AND CON.CUSTOMER_ID = CUS.ID
+                                                AND CON.CUSTOMER_TYPE_ID = CUS.PERSON_TYPE_ID
+                                                AND CUS.PERSON_TYPE_ID = PT.ID
+                                                AND CON.CONTRACT_ID = H.CONTRACT_ID
+                                                AND CON.SELLER_ID = S.ID
+                                                AND CON.SELLER_TYPE_ID = S.PERSON_TYPE_ID
+                                                AND CON.CONTRACT_ID = COM.CONTRACT_ID(+)
+                                                AND CON.CONTRACT_ID = CE.CONTRACT_ID(+)
+                                                AND CON.CONTRACT_ID = INS.CONTRACT_ID(+)
+                                                AND CON.STATUS_ID IN (5, 6)
+                                                AND CON.START_DATE <=
+                                                       TO_DATE ('31.01.2025', 'DD/MM/YYYY')),
+                                     T2
+                                     AS (  SELECT CP.CUSTOMER_ID,
+                                                  CP.CONTRACT_ID,
+                                                  CP.CUSTOMER_TYPE_ID,
+                                                  SUM (CP.PAYMENT_AMOUNT) PAYMENT_AMOUNT,
+                                                  SUM (CP.BASIC_AMOUNT) BASIC_AMOUNT,
+                                                  SUM (CP.PAYMENT_INTEREST_AMOUNT)
+                                                     PAYMENT_INTEREST_AMOUNT,
+                                                  MAX (CP.PAYMENT_DATE) PAYMENT_DATE
+                                             FROM CRS_USER.CUSTOMER_PAYMENTS CP
+                                            WHERE CP.PAYMENT_DATE <=
+                                                     TO_DATE ('31.01.2025', 'DD/MM/YYYY')
+                                         GROUP BY CP.CUSTOMER_ID,
+                                                  CP.CONTRACT_ID,
+                                                  CP.CUSTOMER_TYPE_ID,
+                                                  CP.USED_USER_ID),
+                                     T3
+                                      AS (SELECT CONTRACT_ID, DEBT, PAYMENT_INTEREST_DEBT, PAYMENT_DATE
+                                                FROM CRS_USER.CUSTOMER_PAYMENTS CP
+                                              WHERE ID =
+                                                       (SELECT MAX (ID)
+                                                             FROM CRS_USER.CUSTOMER_PAYMENTS
+                                                      WHERE CONTRACT_ID =
+                                                                  CP.CONTRACT_ID
+                                                                AND PAYMENT_DATE <=
+                                                                      TO_DATE ('31.01.2025',
+                                                                             'DD/MM/YYYY')))
+                                SELECT T1.CUSTOMER_CODE,
+                                       T1.FULL_CUSTOMER_NAME,
+                                       T1.CUSTOMER_NAME,
+                                       T1.CONTRACT_CODE,
+                                       T1.INTEREST,
+                                       T1.PERIOD,
+                                       T1.START_DATE,
+                                       T1.GIVEN_DATE,
+                                       T1.END_DATE,
+                                       T1.AMOUNT,
+                                       T1.CURRENCY_CODE,
+                                       T1.CURRENCY_ORDER,
+                                       NVL (T2.PAYMENT_AMOUNT, 0) PAYMENT_AMOUNT,
+                                       NVL (T2.BASIC_AMOUNT, 0) BASIC_AMOUNT,
+                                       T1.AMOUNT - NVL (T2.BASIC_AMOUNT, 0) DEBT,
+                                       NVL (T2.PAYMENT_INTEREST_AMOUNT, 0) PAYMENT_INTEREST_AMOUNT,
+                                       NVL (T3.PAYMENT_INTEREST_DEBT, 0) PAYMENT_INTEREST_DEBT,
+                                       T2.PAYMENT_DATE MAX_PAYMENT_DATE,
+                                       T1.HOSTAGE,
+                                       T1.LIQUID_AMOUNT,
+                                       T1.SELLER_NAME,
+                                       T1.COMMITMENT_NAME,
+                                       T1.MONTHLY_AMOUNT,
+                                       T1.PHONES,
+                                       T1.CONTRACT_NOTE,
+                                       T1.NOTE_CHANGE_USER,
+                                       T1.NOTE_CHANGE_DATE,
+                                       T1.USED_USER_ID,
+                                       T1.CONTRACT_ID,
+                                       T1.CUSTOMER_ID,
+                                       T1.CUSTOMER_TYPE_ID,
+                                       T1.SELLER_ID,
+                                       T1.SELLER_TYPE_ID,
+                                       T1.STATUS_ID,
+                                       T1.CREDIT_TYPE_ID,
+                                       T1.CREDIT_NAME_ID,
+                                       T1.COMMITMENT_ID,
+                                       T1.PAYMENT_TYPE,
+                                       (CASE
+                                           WHEN T2.PAYMENT_DATE IS NULL THEN T1.START_DATE
+                                           ELSE T2.PAYMENT_DATE
+                                        END)
+                                          P_STARTDATE,
+                                       (CASE
+                                           WHEN T1.STATUS_ID = 5
+                                           THEN
+                                              TO_DATE ('31.01.2025', 'DD/MM/YYYY')
+                                           ELSE
+                                              (CASE
+                                                  WHEN T2.PAYMENT_DATE IS NULL THEN T1.START_DATE
+                                                  ELSE T2.PAYMENT_DATE
+                                               END)
+                                        END)
+                                          P_ENDDATE,
+                                        T1.PARENT_ID,
+                                        T1.COMMITMENT_PERSON_TYPE_ID,
+                                        T1.CONTRACT_EVALUATE_NAME,
+                                        EXTRACT (DAY FROM NVL2 (T1.EXTEND_START_DATE, T1.EXTEND_START_DATE, T1.START_DATE))
+                                                        PAYMENT_DAY,
+                                        T1.EXTEND_MONTHLY_AMOUNT,
+                                        T1.IS_OLD,
+                                        T1.INT_EXTEND_MONTH_COUNT,
+                                        T1.INSURANCE_END_DATE,
+                                        T1.INSURANCE_DIFF_MONTH,
+                                        T1.IS_SPECIAL_ATTENTION,
+                                        T1.CONTRACT_EVALUATE_ID,
+                                        T1.HOSTAGE_NAME,
+                                        T1.EXTEND_START_DATE,
+                                        T1.EXTEND_DEBT,
+                                        T1.CURRENCY_ID,
+                                        T1.CONTRACT_START_DATE,
+                                        T1.CONTRACT_END_DATE,
+                                        T3.LAST_PAYMENT_DATE,
+                                        T1.PERSON_TYPE_NAME
+                                  FROM T1
+                                                 LEFT JOIN T2 ON T1.CONTRACT_ID = T2.CONTRACT_ID
+                                                 LEFT JOIN T3 ON T1.CONTRACT_ID = T3.CONTRACT_ID) T
+                                ORDER BY T.CONTRACT_CODE DESC) LT WHERE 1 = 1
+-------------------------------------------------

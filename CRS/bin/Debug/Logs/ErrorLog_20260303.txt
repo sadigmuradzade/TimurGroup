@@ -1,0 +1,12 @@
+
+Log Entry : 11:01:24 3 mart 2026, çərşənbə axşamı
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteTwoQuery
+  
+   ShowMessage: Ödəniş bank əməliyyatlarına daxil olunmadı.
+   Exception Message: ORA-02291: integrity constraint (CRS_USER.SYS_C0014507) violated - parent key not found
+   SQL Text      :  sql_text1 = DELETE FROM CRS_USER.BANK_OPERATIONS WHERE APPOINTMENT_ID = 19 AND OPERATION_DATE = TO_DATE('03.03.2026','DD.MM.YYYY') AND CONTRACT_CODE = 'A001',
+ sql_text2 = INSERT INTO CRS_USER.BANK_OPERATIONS(ID,BANK_ID,OPERATION_DATE,APPOINTMENT_ID,INCOME,EXPENSES,DEBT,CONTRACT_CODE,ACCOUNTING_PLAN_ID) VALUES(CRS_USER.BANK_OPERATION_SEQUENCE.NEXTVAL,0,TO_DATE('03.03.2026','DD/MM/YYYY'),19,0,0,0,'A001',0)
+-------------------------------------------------

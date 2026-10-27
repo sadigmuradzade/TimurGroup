@@ -1,0 +1,73 @@
+
+Log Entry : 15:19:34 28 yanvar 2026, çərşənbə
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteProcedureWithParametr/CRS_USER.PROC_UPDATE_LRS_COLORS
+  
+   ShowMessage: Rənglər əsas cədvəldə dəyişdirilmədi.
+   Exception Message: ORA-06550: line 1, column 16:
+PLS-00905: object CRS_USER.PROC_UPDATE_LRS_COLORS is invalid
+ORA-06550: line 1, column 7:
+PL/SQL: Statement ignored
+   SQL Text      :  CRS_USER.PROC_UPDATE_LRS_COLORS
+-------------------------------------------------
+
+Log Entry : 17:00:37 28 yanvar 2026, çərşənbə
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteProcedureWithUser/CRS_USER.PROC_INSERT_CUSTOMER_DETAILS
+  
+   ShowMessage: Müştərinin temp məlumatları əsas cədvələ daxil edilmədi.
+   Exception Message: ORA-06550: line 1, column 16:
+PLS-00905: object CRS_USER.PROC_INSERT_CUSTOMER_DETAILS is invalid
+ORA-06550: line 1, column 7:
+PL/SQL: Statement ignored
+   SQL Text      :  CRS_USER.PROC_INSERT_CUSTOMER_DETAILS
+-------------------------------------------------
+
+Log Entry : 17:04:43 28 yanvar 2026, çərşənbə
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  ExecuteQuery/FCustomerAddEdit/InsertCustomer
+  
+   ShowMessage: Müştərinin məlumatları sistemə daxil edilmədi.
+   Exception Message: ORA-00001: unique constraint (CRS_USER.SYS_C0011028) violated
+   SQL Text      :  INSERT INTO CRS_USER.CUSTOMERS(ID,
+                                                        CODE,
+                                                        SURNAME, 
+                                                        NAME, 
+                                                        PATRONYMIC, 
+                                                        SEX_ID, 
+                                                        NOTE,
+                                                        BIRTHDAY,
+                                                        BIRTHPLACE_ID,
+                                                        VOEN,
+                                                        ACCOUNT_NUMBER)
+                        VALUES(1347,
+                                '0001',
+                                'Sdf',
+                                'Sdfsdf',
+                                'Sdfsdf',
+                                1,
+                                '',
+                                TO_DATE('29.12.2025','DD/MM/YYYY'),
+                                4,
+                                '',
+                                '')
+-------------------------------------------------
+
+Log Entry : 17:04:46 28 yanvar 2026, çərşənbə
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteProcedureWithUser/CRS_USER.PROC_INSERT_CUSTOMER_DETAILS
+  
+   ShowMessage: Müştərinin temp məlumatları əsas cədvələ daxil edilmədi.
+   Exception Message: ORA-02291: integrity constraint (CRS_USER.FK_CC_CUSTOMER_ID) violated - parent key not found
+ORA-06512: at "CRS_USER.PROC_INSERT_CUSTOMER_DETAILS", line 103
+ORA-06512: at line 1
+   SQL Text      :  CRS_USER.PROC_INSERT_CUSTOMER_DETAILS
+-------------------------------------------------

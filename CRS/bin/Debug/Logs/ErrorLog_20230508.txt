@@ -1,0 +1,10 @@
+
+Log Entry : 12:22:44 8 may 2023, bazar ertəsi
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  RunInOneTransaction
+  
+   ShowMessage: Zaminin məlumatları temp cədvələ daxil edilmədi.
+   Exception Message: ORA-01400: cannot insert NULL into ("CRS_USER_TEMP"."GUARANTEE_TEMP"."CODE")
+-------------------------------------------------

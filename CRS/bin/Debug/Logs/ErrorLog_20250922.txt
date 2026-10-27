@@ -1,0 +1,14 @@
+
+Log Entry : 19:05:01 22 sentyabr 2025, bazar ertəsi
+  
+   UserName =  Admin
+   FormName =  FSalary
+   ProcedureName =  CRS.Forms.Bookkeeping.FSalary.BOK_Click
+  
+   ShowMessage: Əməkhaqqının ödənişləri jurnala daxil edilmədi.
+   Exception Message: ORA-06550: line 1, column 7:
+PLS-00306: wrong number or types of arguments in call to 'PROC_SALARY_OPERATION'
+ORA-06550: line 1, column 7:
+PL/SQL: Statement ignored
+   SQL Text      :  CRS_USER.PROC_SALARY_OPERATION
+-------------------------------------------------

@@ -1,0 +1,118 @@
+
+Log Entry : 11:45:22 17 noyabr 2023, cümə
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  GenerateDataTable : FCustomerPaymentPercent/LoadData
+  
+   ShowMessage: Müştərilərin ödədiyi faizlər açılmadı.
+   Exception Message: ORA-00933: SQL command not properly ended
+   SQL Text      :  SELECT *
+                                FROM (SELECT CON.CONTRACT_ID,
+                                             COM.CUSTOMER_NAME,
+                                             CP.PAYMENT_NAME,
+                                             CON.CONTRACT_CODE,
+                                             CP.PAYMENT_DATE,
+                                             CP.CURRENCY_RATE,
+                                             CP.INTEREST_AMOUNT,
+                                             ROUND (CP.INTEREST_AMOUNT * CP.CURRENCY_RATE, 2)
+                                                INTEREST_AMOUNT_AZN, 
+                                             CP.PAYMENT_INTEREST_AMOUNT,
+                                             ROUND (CP.PAYMENT_INTEREST_AMOUNT * CP.CURRENCY_RATE, 2)
+                                                PAYMENT_INTEREST_AMOUNT_AZN,
+                                             CP.BASIC_AMOUNT,
+                                             ROUND (CP.BASIC_AMOUNT * CP.CURRENCY_RATE, 2) BASIC_AMOUNT_AZN,
+                                             CON.CURRENCY_CODE,
+                                             DECODE (
+                                                CP.BANK_CASH,
+                                                'C', 'Kassa',
+                                                   'Bank - '
+                                                || (SELECT B.SHORT_NAME
+                                                      FROM CRS_USER.BANKS B
+                                                     WHERE B.ID IN (SELECT BANK_ID
+                                                                      FROM CRS_USER.BANK_OPERATIONS
+                                                                     WHERE CONTRACT_PAYMENT_ID = CP.ID)))
+                                                PAYMENT_TYPE,
+                                             COM.VOEN,
+                                             COM.AMOUNT,
+                                             CP.INSURANCE_AMOUNT,
+                                             ROUND (CP.PAYED_PENALTY * CP.CURRENCY_RATE, 2) PAYED_PENALTY,
+                                             (CASE
+                                                 WHEN LP.DEBT IS NOT NULL AND LP.DEBT = 0 THEN 1
+                                                 ELSE 0
+                                              END)
+                                                CONTROL_DEBT
+                                        FROM CRS_USER.CUSTOMER_PAYMENTS CP,
+                                             CRS_USER.V_CONTRACTS CON,
+                                             CRS_USER.V_CUSTOMER_PAYMENT_OWNER COM,
+                                             CRS_USER.V_CUSTOMER_LAST_PAYMENT LP
+                                       WHERE     CON.CONTRACT_ID = CP.CONTRACT_ID
+                                             AND CON.CONTRACT_ID = COM.CONTRACT_ID
+                                             AND CP.ID = COM.PAYMENT_ID
+                                             AND CP.BANK_CASH IN ('C', 'B')
+                                             AND CP.PAYMENT_DATE BETWEEN TO_DATE ('',
+                                                                                  'DD.MM.YYYY')
+                                                                     AND TO_DATE ('17.11.2023',
+                                                                                  'DD.MM.YYYY'))
+                                             AND CP.ID = LP.ID(+)
+                            ORDER BY PAYMENT_DATE
+-------------------------------------------------
+
+Log Entry : 11:45:23 17 noyabr 2023, cümə
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  GenerateDataTable : FCustomerPaymentPercent/LoadData
+  
+   ShowMessage: Müştərilərin ödədiyi faizlər açılmadı.
+   Exception Message: ORA-00933: SQL command not properly ended
+   SQL Text      :  SELECT *
+                                FROM (SELECT CON.CONTRACT_ID,
+                                             COM.CUSTOMER_NAME,
+                                             CP.PAYMENT_NAME,
+                                             CON.CONTRACT_CODE,
+                                             CP.PAYMENT_DATE,
+                                             CP.CURRENCY_RATE,
+                                             CP.INTEREST_AMOUNT,
+                                             ROUND (CP.INTEREST_AMOUNT * CP.CURRENCY_RATE, 2)
+                                                INTEREST_AMOUNT_AZN, 
+                                             CP.PAYMENT_INTEREST_AMOUNT,
+                                             ROUND (CP.PAYMENT_INTEREST_AMOUNT * CP.CURRENCY_RATE, 2)
+                                                PAYMENT_INTEREST_AMOUNT_AZN,
+                                             CP.BASIC_AMOUNT,
+                                             ROUND (CP.BASIC_AMOUNT * CP.CURRENCY_RATE, 2) BASIC_AMOUNT_AZN,
+                                             CON.CURRENCY_CODE,
+                                             DECODE (
+                                                CP.BANK_CASH,
+                                                'C', 'Kassa',
+                                                   'Bank - '
+                                                || (SELECT B.SHORT_NAME
+                                                      FROM CRS_USER.BANKS B
+                                                     WHERE B.ID IN (SELECT BANK_ID
+                                                                      FROM CRS_USER.BANK_OPERATIONS
+                                                                     WHERE CONTRACT_PAYMENT_ID = CP.ID)))
+                                                PAYMENT_TYPE,
+                                             COM.VOEN,
+                                             COM.AMOUNT,
+                                             CP.INSURANCE_AMOUNT,
+                                             ROUND (CP.PAYED_PENALTY * CP.CURRENCY_RATE, 2) PAYED_PENALTY,
+                                             (CASE
+                                                 WHEN LP.DEBT IS NOT NULL AND LP.DEBT = 0 THEN 1
+                                                 ELSE 0
+                                              END)
+                                                CONTROL_DEBT
+                                        FROM CRS_USER.CUSTOMER_PAYMENTS CP,
+                                             CRS_USER.V_CONTRACTS CON,
+                                             CRS_USER.V_CUSTOMER_PAYMENT_OWNER COM,
+                                             CRS_USER.V_CUSTOMER_LAST_PAYMENT LP
+                                       WHERE     CON.CONTRACT_ID = CP.CONTRACT_ID
+                                             AND CON.CONTRACT_ID = COM.CONTRACT_ID
+                                             AND CP.ID = COM.PAYMENT_ID
+                                             AND CP.BANK_CASH IN ('C', 'B')
+                                             AND CP.PAYMENT_DATE BETWEEN TO_DATE ('17.11.2023',
+                                                                                  'DD.MM.YYYY')
+                                                                     AND TO_DATE ('17.11.2023',
+                                                                                  'DD.MM.YYYY'))
+                                             AND CP.ID = LP.ID(+)
+                            ORDER BY PAYMENT_DATE
+-------------------------------------------------

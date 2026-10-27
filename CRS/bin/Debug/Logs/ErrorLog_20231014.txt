@@ -1,0 +1,25 @@
+
+Log Entry : 17:40:49 14 oktyabr 2023, şənbə
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteQuery/UpdateUserCloseConnection
+  
+   ShowMessage: İstifadəçinin sistemdən çıxma vaxtı cədvəldə dəyişdirilmədi.
+   Exception Message: ORA-03135: Connection lost contact
+   InnerException Message:  ORA-03135: Connection lost contact
+   An existing connection was forcibly closed by the remote host
+   SQL Text      :  UPDATE CRS_USER.USER_CONNECTIONS SET DISCONNECT_DATE = SYSDATE WHERE USER_ID = 11 AND DISCONNECT_DATE IS NULL
+-------------------------------------------------
+
+Log Entry : 17:41:00 14 oktyabr 2023, şənbə
+  
+   UserName =  Admin
+   FormName =  FMain
+   ProcedureName =  FMain_FormClosing
+  
+   ShowMessage: Sistem bağlanan zaman xəta baş verdi.
+   Exception Message: Oracle error ORA-12571 encountered
+   InnerException Message:  Oracle error ORA-12571 encountered
+   An existing connection was forcibly closed by the remote host
+-------------------------------------------------

@@ -1,0 +1,33 @@
+
+Log Entry : 14:16:05 18 yanvar 2023, çərşənbə
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteQuery/FContractAddEdit/UpdateHostageObject
+  
+   ShowMessage: Daşınmaz əmlakın göstəriciləri bazada dəyişdirilmədi.
+   Exception Message: ORA-00904: "WEQ": invalid identifier
+   SQL Text      :  UPDATE CRS_USER.HOSTAGE_OBJECT SET ADDRESS = 'Bakı şəhəri, Səbail rayonu, Xaqani küçəsi, ev 26/32, mənzil 52. Yeni qaydalarla: AZ1000, Bakı şəhəri, Səbail rayonu, Xaqani küçəsi, 64, M6, m1',EXCERPT = '004011000031-05101-093040',AREA = 79,LIQUID_AMOUNT = 160000,FIRST_PAYMENT = 67200,CURRENCY_ID = 1,REGISTER_NUMBER = WEQ WHERE CONTRACT_ID = 2230
+-------------------------------------------------
+
+Log Entry : 14:18:08 18 yanvar 2023, çərşənbə
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteQuery/FContractAddEdit/UpdateHostageObject
+  
+   ShowMessage: Daşınmaz əmlakın göstəriciləri bazada dəyişdirilmədi.
+   Exception Message: ORA-00904: "SEDF": invalid identifier
+   SQL Text      :  UPDATE CRS_USER.HOSTAGE_OBJECT SET ADDRESS = 'Bakı şəhəri, Səbail rayonu, Xaqani küçəsi, ev 26/32, mənzil 52. Yeni qaydalarla: AZ1000, Bakı şəhəri, Səbail rayonu, Xaqani küçəsi, 64, M6, m1',EXCERPT = '004011000031-05101-093040',AREA = 79,LIQUID_AMOUNT = 160000,FIRST_PAYMENT = 67200,CURRENCY_ID = 1,REGISTER_NUMBER = SEDF WHERE CONTRACT_ID = 2230
+-------------------------------------------------
+
+Log Entry : 14:18:42 18 yanvar 2023, çərşənbə
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteQuery/FContractAddEdit/UpdateHostageObject
+  
+   ShowMessage: Daşınmaz əmlakın göstəriciləri bazada dəyişdirilmədi.
+   Exception Message: ORA-00904: "SDF234": invalid identifier
+   SQL Text      :  UPDATE CRS_USER.HOSTAGE_OBJECT SET ADDRESS = 'Bakı şəhəri, Səbail rayonu, Xaqani küçəsi, ev 26/32, mənzil 52. Yeni qaydalarla: AZ1000, Bakı şəhəri, Səbail rayonu, Xaqani küçəsi, 64, M6, m1',EXCERPT = '004011000031-05101-093040',AREA = 79,LIQUID_AMOUNT = 160000,FIRST_PAYMENT = 67200,CURRENCY_ID = 1,REGISTER_NUMBER = SDF234 WHERE CONTRACT_ID = 2230
+-------------------------------------------------

@@ -1,0 +1,62 @@
+
+Log Entry : 13:55:26 2 sentyabr 2024, bazar ertəsi
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  GenerateDataTable : FCommitmentTransmission/FExtendTime_Load
+  
+   ShowMessage: Qalıq tapılmadı.
+   Exception Message: ORA-04063: package body "CRS_USER.TOTALS" has errors
+   SQL Text      :  SELECT T.DEBT,
+                                         CRS_USER.TOTALS.PAYMENT_INTEREST_DEBT (T.P_STARTDATE,
+                                                                       T.P_ENDDATE,
+                                                                       T.DEBT,
+                                                                       T.INTEREST,
+                                                                       T.CONTRACT_ID,
+                                                                       T.PAYMENT_INTEREST_AMOUNT)
+                                            PAYMENT_INTEREST_DEBT
+                                    FROM (WITH T1
+                                               AS (SELECT CON.INTEREST,                          
+                                                          CON.START_DATE,
+                                                          CON.AMOUNT,  
+                                                          CON.CONTRACT_ID,
+                                                          CON.CUSTOMER_ID,
+                                                          CON.CUSTOMER_TYPE_ID                          
+                                                     FROM CRS_USER.V_CONTRACTS CON,                          
+                                                          CRS_USER.V_CUSTOMERS CUS                          
+                                                    WHERE     CON.IS_COMMIT = 1
+                                                          AND CON.CUSTOMER_ID = CUS.ID
+                                                          AND CON.CUSTOMER_TYPE_ID = CUS.PERSON_TYPE_ID                                                 
+                                                          AND CON.START_DATE <=
+                                                                 TO_DATE ('02.09.2024', 'DD/MM/YYYY')),
+                                               T2
+                                               AS (  SELECT CP.CUSTOMER_ID,
+                                                            CP.CONTRACT_ID,
+                                                            CP.CUSTOMER_TYPE_ID,
+                                                            SUM (CP.BASIC_AMOUNT) BASIC_AMOUNT,
+                                                            SUM (CP.PAYMENT_INTEREST_AMOUNT)
+                                                               PAYMENT_INTEREST_AMOUNT,
+                                                            MAX (CP.PAYMENT_DATE) PAYMENT_DATE
+                                                       FROM CRS_USER.CUSTOMER_PAYMENTS CP
+                                                      WHERE CP.PAYMENT_DATE <=
+                                                               TO_DATE ('02.09.2024', 'DD/MM/YYYY')
+                                                   GROUP BY CP.CUSTOMER_ID,
+                                                            CP.CONTRACT_ID,
+                                                            CP.CUSTOMER_TYPE_ID)
+                                          SELECT T1.INTEREST,  
+                                                 T1.AMOUNT - NVL (T2.BASIC_AMOUNT, 0) DEBT,
+                                                 NVL (T2.PAYMENT_INTEREST_AMOUNT, 0) PAYMENT_INTEREST_AMOUNT,                 
+                                                 T1.CONTRACT_ID,                 
+                                                 (CASE
+                                                     WHEN T2.PAYMENT_DATE IS NULL THEN T1.START_DATE
+                                                     ELSE T2.PAYMENT_DATE
+                                                  END)
+                                                    P_STARTDATE,
+                                                 TO_DATE ('02.09.2024', 'DD/MM/YYYY') P_ENDDATE                 
+                                            FROM T1
+                                                 LEFT JOIN T2
+                                                    ON     T1.CUSTOMER_ID = T2.CUSTOMER_ID
+                                                       AND T1.CONTRACT_ID = T2.CONTRACT_ID
+                                                       AND T1.CUSTOMER_TYPE_ID = T2.CUSTOMER_TYPE_ID) T
+                                        WHERE CONTRACT_ID = 2192
+-------------------------------------------------

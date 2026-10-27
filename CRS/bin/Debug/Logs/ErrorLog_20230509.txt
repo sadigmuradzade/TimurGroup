@@ -1,0 +1,31 @@
+
+Log Entry : 10:53:21 9 may 2023, çərşənbə axşamı
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteProcedureWithUser/CRS_USER.PROC_INSERT_CONTRACT_SUB_DATA
+  
+   ShowMessage: Müqavilənin alt məlumatları əsas cədvəllərə daxil olmadı.
+   Exception Message: ORA-01400: cannot insert NULL into ("CRS_USER"."GUARANTEE"."CUSTOMER_NAME")
+ORA-06512: at "CRS_USER.PROC_INSERT_CONTRACT_SUB_DATA", line 415
+ORA-06512: at line 1
+   SQL Text      :  CRS_USER.PROC_INSERT_CONTRACT_SUB_DATA
+-------------------------------------------------
+
+Log Entry : 11:22:21 9 may 2023, çərşənbə axşamı
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  GenerateDataTable : FContractAddEdit/LoadGuarantee
+  
+   ShowMessage: Zaminlərin siyahısı yüklənmədi.
+   Exception Message: ORA-00923: FROM keyword not found where expected
+   SQL Text      :  SELECT G.ID,    
+                                   LPAD (G.CODE, 2, '0') CODE,
+                                   G.CUSTOMER_NAME                                   
+                                   G.NAME,
+                                   G.USED_USER_ID
+                              FROM CRS_USER_TEMP.GUARANTEE_TEMP G
+                             WHERE    G.IS_CHANGE != 2
+                                   AND G.CONTRACT_ID = 2288
+-------------------------------------------------

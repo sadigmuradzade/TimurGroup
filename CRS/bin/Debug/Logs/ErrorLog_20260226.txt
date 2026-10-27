@@ -1,0 +1,458 @@
+
+Log Entry : 3:58:02 PM Thursday, February 26, 2026
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteQuery/InsertUserConnection
+  
+   ShowMessage: İstifadəçinin sistemə qoşulma vaxtı cədvələ daxil edilmədi.
+   Exception Message: ORA-01400: cannot insert NULL into ("CRS_USER"."USER_CONNECTIONS"."VERSION")
+   SQL Text      :  INSERT INTO CRS_USER.USER_CONNECTIONS(USER_ID,
+                                                                    IPADDRESS,
+                                                                    MACADDRESS,
+                                                                    CONNECT_DATE,
+                                                                    COMPUTER_NAME) 
+                                VALUES(11,
+                                        '10.212.134.8',
+                                        '00090FAA0001',
+                                        SYSDATE,
+                                        'WINDOWS-2T6U0SQ')
+-------------------------------------------------
+
+Log Entry : 15:58:10 26 fevral 2026, cümə axşamı
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  GenerateDataTable : FCustomers/LoadCustomersDataGridView
+  
+   ShowMessage: Müştərilərin siyahısı yüklənmədi.
+   Exception Message: ORA-00942: table or view does not exist
+   SQL Text      :  SELECT 1 SS,
+                                 C.ID CUSTOMER_ID,
+                                 C.CODE CUSTOMER_CODE,
+                                 PT.NAME CUSTOMER_TYPE,
+                                 C.FULLNAME,
+                                 P.PHONE,
+                                 C.ADDRESS,
+                                 C.REGISTRATION_ADDRESS,
+                                 C.NOTE,
+                                 C.USED_USER_ID,
+                                 ROW_NUMBER () OVER (ORDER BY 3, 4) ROW_NUM,
+                                 C.PERSON_TYPE_ID,
+                                 C.VOEN,
+                                 C.CUSTOMER_NAME,
+                                  NVL2 (
+                                    (SELECT CUSTOMER_ID
+                                       FROM CRS_USER.V_CUSTOMER_AML_CONTROL
+                                      WHERE CUSTOMER_ID = C.ID AND PERSON_TYPE_ID = C.PERSON_TYPE_ID),
+                                    'Bəli',
+                                    'Xeyr')
+                                    AML_CONTROL
+                            FROM CRS_USER.V_CUSTOMERS C,
+                                 CRS_USER.PERSON_TYPE PT,         
+                                 (  SELECT P.OWNER_ID,
+                                           LISTAGG (
+                                                 0
+                                              || SUBSTR (P.PHONE_NUMBER, 1, 2)
+                                              || '-'
+                                              || SUBSTR (P.PHONE_NUMBER, 3, 3)
+                                              || '-'
+                                              || SUBSTR (P.PHONE_NUMBER, 6, 2)
+                                              || '-'
+                                              || SUBSTR (P.PHONE_NUMBER, 8, 2),
+                                              ';')
+                                           WITHIN GROUP (ORDER BY ORDER_ID)
+                                              PHONE,
+                                           DECODE (P.OWNER_TYPE,  'C', 1,  'JP', 2) PERSON_TYPE_ID
+                                      FROM CRS_USER.PHONES P
+                                     WHERE P.OWNER_TYPE IN ('C', 'JP')
+                                  GROUP BY P.OWNER_ID, P.OWNER_TYPE) P
+                           WHERE     C.ID = P.OWNER_ID(+)
+                                 AND C.PERSON_TYPE_ID = P.PERSON_TYPE_ID(+)
+                                 AND C.PERSON_TYPE_ID = PT.ID
+                        ORDER BY 3, 5
+-------------------------------------------------
+
+Log Entry : 15:58:26 26 fevral 2026, cümə axşamı
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  GenerateDataTable : FContracts/LoadContractsDataGridView
+  
+   ShowMessage: DataTable yaradılmadı.
+   Exception Message: ORA-00904: "C"."COMMISSION_AMOUNT": invalid identifier
+   SQL Text      :  SELECT 1 SS,
+                             C.ID,
+                             CU.FULLNAME CUSTOMERFULLNAME,
+                             CT.CODE || C.CODE CONTRACT_CODE,
+                             CN.NAME CREDIT_NAME,
+                             COM.COMMITMENT_NAME COMMITMENT,
+                             C.START_DATE,
+                             C.END_DATE,
+                             C.PERIOD,
+                             C.CONTRACT_PERCENT INTEREST,
+                             C.GRACE_PERIOD GRACE,
+                             C.AMOUNT,
+                             CUR.CODE CURRENCY_CODE,
+                             C.USED_USER_ID,
+                             C.CUSTOMER_ID,
+                             C.SELLER_ID,
+                             C.IS_COMMIT,
+                             C.STATUS_ID,
+                             ST.STATUS_NAME,
+                             CN.ID CREDIT_NAME_ID,
+                             TRIM (C.NOTE) CONTRACT_NOTE,
+                             C.NOTE_CHANGE_USER,
+                             TO_CHAR (C.NOTE_CHANGE_DATE, 'DD.MM.YYYY HH24:MI:SS AM')
+                                NOTE_CHANGE_DATE,
+                             C.CONTRACT_PERCENT INT_INTEREST,
+                             C.PERIOD INT_PERIOD,
+                             C.NOTE NOTES,
+                             CT.ID CREDIT_TYPE_ID,
+                             ROW_NUMBER () OVER (ORDER BY CT.CODE || C.CODE DESC) ROW_NUM,
+                             (CASE WHEN C.LIQUID_TYPE = 0 THEN C.IS_EXPENSES ELSE 1 END)
+                                IS_EXPENSES,
+                             C.SELLER_TYPE_ID,
+                             C.CUSTOMER_TYPE_ID,
+                             C.PARENT_ID,
+                             COM.PERSON_TYPE_ID COMMITMENT_PERSON_TYPE_ID,
+                             CU.CODE CUSTOMER_CODE,
+                             CU.CUSTOMER_NAME,
+                             NVL(COM.ID,0) COMMITMENT_ID,
+                             H.CAR_NUMBER,
+                             NVL2(CE.MONTH_COUNT, CE.MONTH_COUNT||' ay',  NULL) EXTEND_MOUNT_COUNT,
+                             NVL2(CE.MONTH_COUNT, CE.MONTH_COUNT,  0) INT_EXTEND_MOUNT_COUNT,
+                             C.IS_SPECIAL_ATTENTION,
+                             CE.INTEREST EXTEND_INTEREST,
+                             C.COMMISSION_AMOUNT
+                        FROM CRS_USER.CONTRACTS C,
+                             CRS_USER.CREDIT_TYPE CT,
+                             CRS_USER.CREDIT_NAMES CN,
+                             CRS_USER.CURRENCY CUR,
+                             CRS_USER.STATUS ST,
+                             CRS_USER.V_CUSTOMERS CU,
+                             CRS_USER.V_CONTRACT_COMMITMENTS COM,
+                             CRS_USER.HOSTAGE_CAR H,
+                             CRS_USER.V_LAST_CONTRACT_EXTEND CE
+                       WHERE     C.CREDIT_TYPE_ID = CT.ID
+                             AND C.CUSTOMER_ID = CU.ID
+                             AND C.CUSTOMER_TYPE_ID = CU.PERSON_TYPE_ID
+                             AND C.ID = COM.CONTRACT_ID(+)
+                             AND CT.NAME_ID = CN.ID
+                             AND C.CURRENCY_ID = CUR.ID
+                             AND C.STATUS_ID = ST.ID
+                             AND C.ID = H.CONTRACT_ID(+)
+                             AND C.ID = CE.CONTRACT_ID(+)
+                              AND C.STATUS_ID = 5
+                    ORDER BY CT.CODE || C.CODE DESC
+-------------------------------------------------
+
+Log Entry : 16:36:44 26 fevral 2026, cümə axşamı
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  GenerateDataTable : FContracts/LoadContractsDataGridView
+  
+   ShowMessage: DataTable yaradılmadı.
+   Exception Message: ORA-00904: "C"."PERIOD": invalid identifier
+   SQL Text      :  SELECT 1 SS,
+                             C.ID,
+                             CU.FULLNAME CUSTOMERFULLNAME,
+                             CT.CODE || C.CODE CONTRACT_CODE,
+                             CN.NAME CREDIT_NAME,
+                             COM.COMMITMENT_NAME COMMITMENT,
+                             C.START_DATE,
+                             C.END_DATE,
+                             C.PERIOD,
+                             C.CONTRACT_PERCENT INTEREST,
+                             C.GRACE_PERIOD GRACE,
+                             C.AMOUNT,
+                             CUR.CODE CURRENCY_CODE,
+                             C.USED_USER_ID,
+                             C.CUSTOMER_ID,
+                             C.SELLER_ID,
+                             C.IS_COMMIT,
+                             C.STATUS_ID,
+                             ST.STATUS_NAME,
+                             CN.ID CREDIT_NAME_ID,
+                             TRIM (C.NOTE) CONTRACT_NOTE,
+                             C.NOTE_CHANGE_USER,
+                             TO_CHAR (C.NOTE_CHANGE_DATE, 'DD.MM.YYYY HH24:MI:SS AM')
+                                NOTE_CHANGE_DATE,
+                             C.CONTRACT_PERCENT INT_INTEREST,
+                             C.PERIOD INT_PERIOD,
+                             C.NOTE NOTES,
+                             CT.ID CREDIT_TYPE_ID,
+                             ROW_NUMBER () OVER (ORDER BY CT.CODE || C.CODE DESC) ROW_NUM,
+                             (CASE WHEN C.LIQUID_TYPE = 0 THEN C.IS_EXPENSES ELSE 1 END)
+                                IS_EXPENSES,
+                             C.SELLER_TYPE_ID,
+                             C.CUSTOMER_TYPE_ID,
+                             C.PARENT_ID,
+                             COM.PERSON_TYPE_ID COMMITMENT_PERSON_TYPE_ID,
+                             CU.CODE CUSTOMER_CODE,
+                             CU.CUSTOMER_NAME,
+                             NVL(COM.ID,0) COMMITMENT_ID,
+                             H.CAR_NUMBER,
+                             NVL2(CE.MONTH_COUNT, CE.MONTH_COUNT||' ay',  NULL) EXTEND_MOUNT_COUNT,
+                             NVL2(CE.MONTH_COUNT, CE.MONTH_COUNT,  0) INT_EXTEND_MOUNT_COUNT,
+                             C.IS_SPECIAL_ATTENTION,
+                             CE.INTEREST EXTEND_INTEREST,
+                             C.COMMISSION_AMOUNT
+                        FROM CRS_USER.CONTRACTS C,
+                             CRS_USER.CREDIT_TYPE CT,
+                             CRS_USER.CREDIT_NAMES CN,
+                             CRS_USER.CURRENCY CUR,
+                             CRS_USER.STATUS ST,
+                             CRS_USER.V_CUSTOMERS CU,
+                             CRS_USER.V_CONTRACT_COMMITMENTS COM,
+                             CRS_USER.HOSTAGE_CAR H,
+                             CRS_USER.V_LAST_CONTRACT_EXTEND CE
+                       WHERE     C.CREDIT_TYPE_ID = CT.ID
+                             AND C.CUSTOMER_ID = CU.ID
+                             AND C.CUSTOMER_TYPE_ID = CU.PERSON_TYPE_ID
+                             AND C.ID = COM.CONTRACT_ID(+)
+                             AND CT.NAME_ID = CN.ID
+                             AND C.CURRENCY_ID = CUR.ID
+                             AND C.STATUS_ID = ST.ID
+                             AND C.ID = H.CONTRACT_ID(+)
+                             AND C.ID = CE.CONTRACT_ID(+)
+                              AND C.STATUS_ID = 5
+                    ORDER BY CT.CODE || C.CODE DESC
+-------------------------------------------------
+
+Log Entry : 19:04:04 26 fevral 2026, cümə axşamı
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  GenerateDataTable : FContractAddEdit/LoadCommitmentDataGridView
+  
+   ShowMessage: DataTable yaradılmadı.
+   Exception Message: ORA-00904: "CC"."NOTE": invalid identifier
+   SQL Text      :  SELECT 1 SS,
+                                 CC.ID,
+                                 CC.COMMITMENT_NAME,
+                                 CC.AGREEMENTDATE,
+                                 CC.TOTAL_DEBT || ' ' || C.CODE DEBT,
+                                 CC.PERIOD_DATE,
+                                 CC.INTEREST || ' %' C_INTEREST,
+                                 CC.ADVANCE_PAYMENT,
+                                 CC.SERVICE_AMOUNT,
+                                 CC.INSERT_DATE,
+                                 CC.PERSON_TYPE_ID,
+                                 CC.NOTE
+                            FROM CRS_USER_TEMP.CONTRACT_ALL_COMMITMENTS_TEMP CC, CRS_USER.CURRENCY C
+                           WHERE CC.IS_CHANGE <> 2 AND CC.CURRENCY_ID = C.ID AND CC.CONTRACT_ID = 37
+                        ORDER BY CC.ID
+-------------------------------------------------
+
+Log Entry : 19:20:29 26 fevral 2026, cümə axşamı
+  
+   UserName =  Admin
+   FormName =  CommitmentsDAL
+   ProcedureName =  SelectAllCommitmentTempByContractID
+  
+   ShowMessage: Öhdəlik açılmadı.
+   Exception Message: ORA-00904: "CD"."PINCODE": invalid identifier
+   SQL Text      :  SELECT CC.ID,
+                                 CC.PARENT_ID,
+                                 CC.CONTRACT_ID,
+                                 CC.AGREEMENTDATE,
+                                 CC.COMMITMENT_NAME,
+                                 CC.DEBT,
+                                 CC.CURRENCY_ID,
+                                 C.CODE CURRENCY_CODE,
+                                 CC.PERIOD_DATE,
+                                 CC.INTEREST,
+                                 CC.ADVANCE_PAYMENT,
+                                 CC.SERVICE_AMOUNT,
+                                 CC.IS_CHANGE,
+                                 CC.PERSON_TYPE_ID,
+                                 CD.CARD,
+                                 CD.REGISTRATION_ADDRESS ADDRESS,
+                                 CD.VOEN,
+                                 CD.PINCODE,
+                                 CC.MONTH_COUNT,
+                                 CC.MONTHLY_AMOUNT,
+                                 CC.TOTAL_DEBT
+                            FROM CRS_USER_TEMP.CONTRACT_ALL_COMMITMENTS_TEMP CC,
+                                 CRS_USER.CURRENCY C,
+                                 CRS_USER_TEMP.V_TEMP_COMMITMENT_CARDS CD
+                           WHERE     CC.CURRENCY_ID = C.ID
+                                 AND CC.IS_CHANGE <> 2
+                                 AND CC.ID = CD.COMMITMENT_ID
+                                 AND CC.CONTRACT_ID = 37
+                        ORDER BY CC.ID
+-------------------------------------------------
+
+Log Entry : 19:23:41 26 fevral 2026, cümə axşamı
+  
+   UserName =  Admin
+   FormName =  CommitmentsDAL
+   ProcedureName =  SelectAllCommitmentTempByContractID
+  
+   ShowMessage: Öhdəlik açılmadı.
+   Exception Message: ORA-00904: "CD"."PINCODE": invalid identifier
+   SQL Text      :  SELECT CC.ID,
+                                 CC.PARENT_ID,
+                                 CC.CONTRACT_ID,
+                                 CC.AGREEMENTDATE,
+                                 CC.COMMITMENT_NAME,
+                                 CC.DEBT,
+                                 CC.CURRENCY_ID,
+                                 C.CODE CURRENCY_CODE,
+                                 CC.PERIOD_DATE,
+                                 CC.INTEREST,
+                                 CC.ADVANCE_PAYMENT,
+                                 CC.SERVICE_AMOUNT,
+                                 CC.IS_CHANGE,
+                                 CC.PERSON_TYPE_ID,
+                                 CD.CARD,
+                                 CD.REGISTRATION_ADDRESS ADDRESS,
+                                 CD.VOEN,
+                                 CD.PINCODE,
+                                 CC.MONTH_COUNT,
+                                 CC.MONTHLY_AMOUNT,
+                                 CC.TOTAL_DEBT
+                            FROM CRS_USER_TEMP.CONTRACT_ALL_COMMITMENTS_TEMP CC,
+                                 CRS_USER.CURRENCY C,
+                                 CRS_USER_TEMP.V_TEMP_COMMITMENT_CARDS CD
+                           WHERE     CC.CURRENCY_ID = C.ID
+                                 AND CC.IS_CHANGE <> 2
+                                 AND CC.ID = CD.COMMITMENT_ID
+                                 AND CC.CONTRACT_ID = 37
+                        ORDER BY CC.ID
+-------------------------------------------------
+
+Log Entry : 19:27:16 26 fevral 2026, cümə axşamı
+  
+   UserName =  Admin
+   FormName =  CommitmentsDAL
+   ProcedureName =  SelectAllCommitmentTempByContractID
+  
+   ShowMessage: Öhdəlik açılmadı.
+   Exception Message: ORA-00904: "CD"."PINCODE": invalid identifier
+   SQL Text      :  SELECT CC.ID,
+                                 CC.PARENT_ID,
+                                 CC.CONTRACT_ID,
+                                 CC.AGREEMENTDATE,
+                                 CC.COMMITMENT_NAME,
+                                 CC.DEBT,
+                                 CC.CURRENCY_ID,
+                                 C.CODE CURRENCY_CODE,
+                                 CC.PERIOD_DATE,
+                                 CC.INTEREST,
+                                 CC.ADVANCE_PAYMENT,
+                                 CC.SERVICE_AMOUNT,
+                                 CC.IS_CHANGE,
+                                 CC.PERSON_TYPE_ID,
+                                 CD.CARD,
+                                 CD.REGISTRATION_ADDRESS ADDRESS,
+                                 CD.VOEN,
+                                 CD.PINCODE,
+                                 CC.MONTH_COUNT,
+                                 CC.MONTHLY_AMOUNT,
+                                 CC.TOTAL_DEBT
+                            FROM CRS_USER_TEMP.CONTRACT_ALL_COMMITMENTS_TEMP CC,
+                                 CRS_USER.CURRENCY C,
+                                 CRS_USER_TEMP.V_TEMP_COMMITMENT_CARDS CD
+                           WHERE     CC.CURRENCY_ID = C.ID
+                                 AND CC.IS_CHANGE <> 2
+                                 AND CC.ID = CD.COMMITMENT_ID
+                                 AND CC.CONTRACT_ID = 37
+                        ORDER BY CC.ID
+-------------------------------------------------
+
+Log Entry : 19:29:47 26 fevral 2026, cümə axşamı
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  GenerateDataTable : FCommitmentTransmission/FExtendTime_Load
+  
+   ShowMessage: Qalıq tapılmadı.
+   Exception Message: ORA-06553: PLS-306: wrong number or types of arguments in call to 'PAYMENT_INTEREST_DEBT'
+   SQL Text      :  SELECT T.DEBT,
+                                   CRS_USER.TOTALS.PAYMENT_INTEREST_DEBT (T.CONTRACT_ID, '20.02.2026')
+                                            PAYMENT_INTEREST_DEBT,
+                                   T.INTEREST
+                          FROM (WITH T1
+                                     AS (SELECT CON.INTEREST,
+                                                CON.START_DATE,
+                                                CON.AMOUNT,
+                                                CON.CONTRACT_ID
+                                           FROM CRS_USER.V_CONTRACTS CON
+                                          WHERE     CON.IS_COMMIT = 1
+                                                AND CON.START_DATE <=
+                                                       TO_DATE ('20.02.2026', 'DD/MM/YYYY')),
+                                     T2
+                                     AS (  SELECT CP.CONTRACT_ID,
+                                                  SUM (CP.BASIC_AMOUNT) BASIC_AMOUNT,
+                                                  SUM (CP.PAYMENT_INTEREST_AMOUNT)
+                                                     PAYMENT_INTEREST_AMOUNT,
+                                                  COUNT(*) PAY_COUNT
+                                             FROM CRS_USER.CUSTOMER_PAYMENTS CP
+                                            WHERE CP.PAYMENT_DATE <=
+                                                     TO_DATE ('20.02.2026', 'DD/MM/YYYY')
+                                         GROUP BY CP.CONTRACT_ID),
+                                     T3 AS (SELECT * FROM CRS_USER.V_CUSTOMER_LAST_PAYMENT)
+                                SELECT NVL(T3.CONTRACT_PERCENT, T1.INTEREST) INTEREST,
+                                       NVL (T3.DEBT, T1.AMOUNT) DEBT,
+                                       NVL (T2.PAYMENT_INTEREST_AMOUNT, 0) PAYMENT_INTEREST_AMOUNT,
+                                       NVL(T3.PAYMENT_INTEREST_DEBT, 0) PAYMENT_INTEREST_DEBT,
+                                       T1.CONTRACT_ID,
+                                       (CASE
+                                           WHEN T3.PAYMENT_DATE IS NULL THEN T1.START_DATE
+                                           ELSE T3.PAYMENT_DATE
+                                        END)
+                                          P_STARTDATE,
+                                       TO_DATE ('20.02.2026', 'DD/MM/YYYY') P_ENDDATE,
+                                       NVL(T2.PAY_COUNT, 0) PAY_COUNT
+                                  FROM T1
+                                       LEFT JOIN T2 ON T1.CONTRACT_ID = T2.CONTRACT_ID
+                                       LEFT JOIN T3 ON T1.CONTRACT_ID = T3.CONTRACT_ID) T
+                         WHERE CONTRACT_ID = 37
+-------------------------------------------------
+
+Log Entry : 19:34:51 26 fevral 2026, cümə axşamı
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  GenerateDataTable : GetMax
+  
+   ShowMessage: DataTable yaradılmadı.
+   Exception Message: ORA-00904: "COMMITMENT_ID": invalid identifier
+   SQL Text      :  SELECT NVL(MAX(VERSION), 0) FROM CRS_USER_TEMP.PAYMENT_SCHEDULES_TEMP WHERE CONTRACT_ID = 37 AND COMMITMENT_ID < 16
+-------------------------------------------------
+
+Log Entry : 19:34:54 26 fevral 2026, cümə axşamı
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  GetMax/FCommitmentTransmission/FCommitmentTransmission_Load
+  
+   ShowMessage: Ən böyük ədəd tapılmadı.
+   Exception Message: Object reference not set to an instance of an object.
+   SQL Text      :  SELECT NVL(MAX(VERSION), 0) FROM CRS_USER_TEMP.PAYMENT_SCHEDULES_TEMP WHERE CONTRACT_ID = 37 AND COMMITMENT_ID < 16
+-------------------------------------------------
+
+Log Entry : 20:09:17 26 fevral 2026, cümə axşamı
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  GenerateDataTable : FContractAddEdit/LoadFPaymentSchedulesReportViewer
+  
+   ShowMessage: Öhdəliyin məlumatları açılmadı.
+   Exception Message: ORA-00904: "CC"."SERIES_AND_NUMBER": invalid identifier
+   SQL Text      :  SELECT COM.COMMITMENT_NAME,
+                                               COM.PHONE,
+                                               COM.ADDRESS,
+                                               COM.VOEN,
+                                               CC.SERIES_AND_NUMBER
+                                          FROM (SELECT * FROM CRS_USER.V_CONTRACT_ALL_COMMITMENTS CAC
+                                                    WHERE CONTRACT_ID = 37 
+                                                      AND ID = (SELECT MAX(ID) FROM CRS_USER.V_CONTRACT_ALL_COMMITMENTS
+                                                                    WHERE AGREEMENTDATE <= TO_DATE('27.02.2026','DD.MM.YYYY') 
+                                                                    AND CONTRACT_ID = CAC.CONTRACT_ID)) COM,
+                                               CRS_USER.V_COMMITMENT_CARDS CC
+                                         WHERE COM.ID = CC.COMMITMENT_ID
+-------------------------------------------------

@@ -1,0 +1,38 @@
+
+Log Entry : 12:21:30 26 aprel 2023, çərşənbə
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  RunInOneTransaction
+  
+   ShowMessage: Əməliyyat bazaya daxil edilmədi.
+   Exception Message: ORA-06550: line 1, column 16:
+PLS-00905: object CRS_USER.PROC_COMMISSION_OPERATION is invalid
+ORA-06550: line 1, column 7:
+PL/SQL: Statement ignored
+-------------------------------------------------
+
+Log Entry : 12:30:31 26 aprel 2023, çərşənbə
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  RunInOneTransaction
+  
+   ShowMessage: Əməliyyat bazaya daxil edilmədi.
+   Exception Message: ORA-06550: line 1, column 16:
+PLS-00905: object CRS_USER.PROC_COMMISSION_OPERATION is invalid
+ORA-06550: line 1, column 7:
+PL/SQL: Statement ignored
+-------------------------------------------------
+
+Log Entry : 12:31:01 26 aprel 2023, çərşənbə
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  RunInOneTransaction
+  
+   ShowMessage: Əməliyyat bazaya daxil edilmədi.
+   Exception Message: ORA-01400: cannot insert NULL into ("CRS_USER"."OPERATION_JOURNAL"."CREDIT_ACCOUNT")
+ORA-06512: at "CRS_USER.PROC_COMMISSION_OPERATION", line 32
+ORA-06512: at line 1
+-------------------------------------------------

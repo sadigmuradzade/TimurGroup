@@ -1,0 +1,52 @@
+
+Log Entry : 09:54:06 7 yanvar 2025, çərşənbə axşamı
+  
+   UserName =  Admin
+   FormName =  GlobalFunctions
+   ProcedureName =  GenerateDataTable
+  
+   ShowMessage: DataTable yaradılmadı.
+   Exception Message: ORA-03135: Connection lost contact
+   InnerException Message:  ORA-03135: Connection lost contact
+   An existing connection was forcibly closed by the remote host
+   SQL Text      :  SELECT T.IMAGE FROM CRS_USER.CUSTOMER_IMAGE T WHERE T.CUSTOMER_ID = 1197
+-------------------------------------------------
+
+Log Entry : 09:54:59 7 yanvar 2025, çərşənbə axşamı
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  CalculatedLeasingTotal
+  
+   ShowMessage: Lizinq Portfeli hesablanmadı.
+   Exception Message: ORA-01407: cannot update ("CRS_USER"."LEASING_TOTAL"."CURRENT_INTEREST_AMOUNT") to NULL
+ORA-06512: at "CRS_USER.PROC_LEASING_TOTAL", line 205
+ORA-06512: at line 1
+   SQL Text      :  PROC_LEASING_TOTAL
+-------------------------------------------------
+
+Log Entry : 12:13:29 7 yanvar 2025, çərşənbə axşamı
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  CalculatedLeasingTotal
+  
+   ShowMessage: Lizinq Portfeli hesablanmadı.
+   Exception Message: ORA-01407: cannot update ("CRS_USER"."LEASING_TOTAL"."CURRENT_INTEREST_AMOUNT") to NULL
+ORA-06512: at "CRS_USER.PROC_LEASING_TOTAL", line 205
+ORA-06512: at line 1
+   SQL Text      :  PROC_LEASING_TOTAL
+-------------------------------------------------
+
+Log Entry : 12:42:03 7 yanvar 2025, çərşənbə axşamı
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  CalculatedLeasingTotal
+  
+   ShowMessage: Lizinq Portfeli hesablanmadı.
+   Exception Message: ORA-01407: cannot update ("CRS_USER"."LEASING_TOTAL"."CURRENT_INTEREST_AMOUNT") to NULL
+ORA-06512: at "CRS_USER.PROC_LEASING_TOTAL", line 205
+ORA-06512: at line 1
+   SQL Text      :  PROC_LEASING_TOTAL
+-------------------------------------------------

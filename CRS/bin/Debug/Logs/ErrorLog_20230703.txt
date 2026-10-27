@@ -1,0 +1,23 @@
+
+Log Entry : 11:31:56 3 iyul 2023, bazar ertəsi
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  LoadCurrencyRateFromCBAR
+  
+   ShowMessage: http://cbar.az/currencies/03.07.2023.xml faylı Mərkəzi Bankın bazasında tapılmadı.
+   Exception Message: The remote name could not be resolved: 'cbar.az'
+-------------------------------------------------
+
+Log Entry : 11:34:22 3 iyul 2023, bazar ertəsi
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteProcedureWithThreeParametrAndUser/CRS_USER.PROC_INSERT_CUSTOMER_PAYMENT
+  
+   ShowMessage: Ödənişlər əsas cədvələ daxil edilmədi.
+   Exception Message: ORA-00001: unique constraint (CRS_USER.SYS_C009158) violated
+ORA-06512: at "CRS_USER.PROC_INSERT_CUSTOMER_PAYMENT", line 91
+ORA-06512: at line 1
+   SQL Text      :  CRS_USER.PROC_INSERT_CUSTOMER_PAYMENT
+-------------------------------------------------

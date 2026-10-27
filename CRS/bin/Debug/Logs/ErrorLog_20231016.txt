@@ -1,0 +1,36 @@
+
+Log Entry : 18:50:13 16 oktyabr 2023, bazar ertəsi
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteQuery/FBurdenAddEdit/InsertDetail
+  
+   ShowMessage: Ərizə göndərilmədi.
+   Exception Message: ORA-01400: cannot insert NULL into ("CRS_USER"."OBJECT_BURDEN_REGISTRATION"."OBJECT_REGISTRATION_ID")
+   SQL Text      :  INSERT INTO CRS_USER.OBJECT_BURDEN_REGISTRATION(FULLNAME,SENT_DATE,ARRIVAL_DATE)
+                                VALUES('Muradzade Sadiq Tofiq',TO_DATE('16.10.2023','DD.MM.YYYY'),TO_DATE('31.10.2023','DD.MM.YYYY'))
+-------------------------------------------------
+
+Log Entry : 18:56:28 16 oktyabr 2023, bazar ertəsi
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteQuery/FBurdenAddEdit/InsertDetail
+  
+   ShowMessage: Ərizə göndərilmədi.
+   Exception Message: ORA-00972: identifier is too long
+   SQL Text      :  INSERT INTO CRS_USER.OBJECT_BURDEN_REGISTRATION(FULLNAME,OBJECT_REGISTRATION_IDSENT_DATE,ARRIVAL_DATE)
+                                VALUES('Sadiq',0,TO_DATE('16.10.2023','DD.MM.YYYY'),TO_DATE('','DD.MM.YYYY'))
+-------------------------------------------------
+
+Log Entry : 18:58:21 16 oktyabr 2023, bazar ertəsi
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteQuery/FBurdenAddEdit/InsertDetail
+  
+   ShowMessage: Ərizə göndərilmədi.
+   Exception Message: ORA-00972: identifier is too long
+   SQL Text      :  INSERT INTO CRS_USER.OBJECT_BURDEN_REGISTRATION(FULLNAME,OBJECT_REGISTRATION_IDSENT_DATE,ARRIVAL_DATE)
+                                VALUES('Muradzade Sadiq',0,TO_DATE('16.10.2023','DD.MM.YYYY'),TO_DATE('','DD.MM.YYYY'))
+-------------------------------------------------

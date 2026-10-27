@@ -1,0 +1,13 @@
+
+Log Entry : 11:49:03 25 iyun 2023, bazar
+  
+   UserName =  Admin
+   FormName =  GlobalProcedures
+   ProcedureName =  ExecuteProcedureWithThreeParametrAndUser/CRS_USER.PROC_INSERT_CUSTOMER_PAYMENT
+  
+   ShowMessage: Ödənişlər əsas cədvələ daxil edilmədi.
+   Exception Message: ORA-00001: unique constraint (CRS_USER.SYS_C009158) violated
+ORA-06512: at "CRS_USER.PROC_INSERT_CUSTOMER_PAYMENT", line 91
+ORA-06512: at line 1
+   SQL Text      :  CRS_USER.PROC_INSERT_CUSTOMER_PAYMENT
+-------------------------------------------------
